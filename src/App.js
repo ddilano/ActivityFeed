@@ -3,25 +3,50 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      user: 'You',
+      prospect: 'Milton Romaguera',
+      action: ['meeting', 'call', 'coffee', 'note', 'message'],
+      feed: [],
+      activityInput: ''
+    }
+  }
+ 
+
+  newFeed=()=>{
+    const oldFeed = [...this.state.feed];
+    oldFeed.unshift(this.state.activityInput)
+    this.setState( state => {
+        return {
+          feed: oldFeed,
+          activityInput: ''
+        }
+        
+    })
+    console.log('activityInput', this.state.activityInput);
+    console.log('feed', this.state.feed);
+  }
+
+  onInputChange = (e) => {
+    this.setState({
+      activityInput: e.target.value
+    })
+  }
+
   render() {
+    const {prospect, feed} = this.state;
+    console.log('this.state in render', this.state);
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <input className='input-field' type='text' placeholder={`add a note about ${prospect}`} onChange={this.onInputChange} value={this.state.activityInput}/>
+        <button type='submit' onClick={this.newFeed}>Submit</button>
+        <ul>
+          {feed.map((i, index) => <li key={index}>{i}</li>)}
+        </ul>
       </div>
-    );
+    )
   }
 }
 
